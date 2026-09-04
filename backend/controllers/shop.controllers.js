@@ -47,10 +47,13 @@ export const createEditShop = async (req, res) => {
             );
         }
 
-        await shop.populate("owner").populate({
-               path:"items",
-               options:{sort:{updatedAt: -1}}
-            });;
+       await shop.populate([
+    { path: "owner" },
+    {
+        path: "items",
+        options: { sort: { updatedAt: -1 } }
+    }
+]);
 
         return res.status(201).json(shop);
 
