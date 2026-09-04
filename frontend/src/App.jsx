@@ -15,7 +15,7 @@ import AddItems from "./pages/AddItems";
 import EditItem from "./pages/EditItem";
 
 
-export const serverUrl = "http://localhost:3000";
+export const serverUrl = import.meta.env.VITE_API_URL;
 const App = () => {
   useGetCurrentUser()
   useGetCity()
