@@ -1,0 +1,38 @@
+import React from "react";
+import { Routes, Route } from "react-router-dom";
+import Home from "./pages/Home";
+
+import SignUp from "./pages/signUp";
+import SignIn from "./pages/signIn";
+import ForgotPassword from "./pages/ForgotPassword";
+import useGetCurrentUser from "./hook/useGetCurrentUser";
+import { useSelector } from "react-redux";
+import { Navigate } from "react-router-dom";
+import useGetCity from "./hook/useGetCity";
+import useGetMyShop from "./hook/useGetMyShop";
+import CreateEditShop from "./pages/CreateEditShop";
+import AddItems from "./pages/AddItems";
+import EditItem from "./pages/EditItem";
+
+
+export const serverUrl = "http://localhost:3000";
+const App = () => {
+  useGetCurrentUser()
+  useGetCity()
+  useGetMyShop()
+  const {userData} =  useSelector(state=>state.user)
+  
+  return (
+    <Routes>
+      <Route path="/signup" element={!userData?<SignUp/>:<Navigate to={"/"}/>} />
+      <Route path="/signin" element={!userData?<SignIn/>:<Navigate to={"/"}/>} />
+      <Route path="/forgot-password" element={!userData?<ForgotPassword/>:<Navigate to={"/"}/>} />
+      <Route path="/" element={userData?<Home/>:<Navigate to={"/signin"}/>} />
+      <Route path='/create-edit-shop' element={userData ? <CreateEditShop/>:<Navigate to={"/"}/>}/>
+       <Route path='/add-food' element={userData ? <AddItems/>:<Navigate to={"/"}/>}/>
+       <Route path='/edititem/:itemId' element={userData ? <EditItem/>:<Navigate to={"/"}/>}/>
+    </Routes>
+  );
+};
+
+export default App;
