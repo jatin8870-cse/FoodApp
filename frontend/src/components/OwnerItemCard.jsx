@@ -5,7 +5,7 @@ import { useNavigate} from 'react-router-dom';
 import { useDispatch } from 'react-redux';
  import axios from 'axios';
 import { serverUrl } from '../App';
-import { setMyShopData } from '../redux/slices/shopSlice';
+import { setMyShopData } from '../redux/ownerSlice';
 
 
 function OwnerItemCard({ data}) {
