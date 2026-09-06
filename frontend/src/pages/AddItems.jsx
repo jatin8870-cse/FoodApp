@@ -6,6 +6,7 @@ import { FaUtensils } from "react-icons/fa";
 import { setMyShopData } from '../redux/ownerSlice';
 import axios from 'axios';
 import { serverUrl } from '../App';
+import { toast } from 'react-toastify';
 
 
 
@@ -42,6 +43,10 @@ const AddItems = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault()
+          if (!backendImage) {
+                toast.error("Please Select Food Image");
+                return;
+          }
         setIsLoading(true);
         try {
             const formData = new FormData()
@@ -110,11 +115,11 @@ const AddItems = () => {
 
                         <div>
                             <label className='block text-sm font-medium text-gray-700 mb-1'>Select Category</label>
-                            <select className='w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500'
+                            <select required className='w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500'
                                 onChange={(e) => setCategory(e.target.value)}
                                 value={category}
                             >
-                                <option value>Select Category</option>
+                                <option value="">Select Category</option>
                                 {categories.map((cate, index) => (
                                     <option value={cate} key={index}>{cate}</option>
                                 ))}

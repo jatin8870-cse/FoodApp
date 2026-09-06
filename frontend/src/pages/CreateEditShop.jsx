@@ -7,6 +7,7 @@ import { setMyShopData } from '../redux/ownerSlice';
 import axios from 'axios';
 import { serverUrl } from '../App';
 import { ClipLoader } from 'react-spinners';
+import { toast } from 'react-toastify';
 
 
 const CreateEditShop = () => {
@@ -31,6 +32,10 @@ const CreateEditShop = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault()
+         if (!backendImage) {
+        toast.error("Please Reselect shop image");
+        return;
+    }
         setIsLoading(true);
         try {
             const formData = new FormData()
@@ -47,7 +52,7 @@ const CreateEditShop = () => {
 
             dispatch(setMyShopData(result.data))
              navigate("/");
-            console.log(result.data)
+           
         } catch (error) {
             console.log(error)
         }  finally {

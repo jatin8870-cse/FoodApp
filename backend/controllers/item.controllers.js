@@ -2,7 +2,11 @@ import Item from "../models/item.model.js";
 import Shop from "../models/shop.model.js";
 import uploadOnCloudinary from "../utils/cloudinary.js";
 
+
 export const addItem = async (req,res) => {
+
+     
+
     try{
      const {name,category,foodtype,price} = req.body
      let image;
@@ -31,8 +35,6 @@ await shop.populate("owner");
 
     } catch (error) {
     console.log("🔥 ADD ITEM ERROR:", error);
-    console.log("🔥 MESSAGE:", error.message);
-    console.log("🔥 STACK:", error.stack);
 
     return res.status(500).json({
         message: "add item error",

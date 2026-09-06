@@ -1,6 +1,7 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
+import {ToastContainer} from "react-toastify";
 
 import SignUp from "./pages/signUp";
 import SignIn from "./pages/signIn";
@@ -23,6 +24,7 @@ const App = () => {
   const {userData} =  useSelector(state=>state.user)
   
   return (
+    <>
     <Routes>
       <Route path="/signup" element={!userData?<SignUp/>:<Navigate to={"/"}/>} />
       <Route path="/signin" element={!userData?<SignIn/>:<Navigate to={"/"}/>} />
@@ -31,7 +33,10 @@ const App = () => {
       <Route path='/create-edit-shop' element={userData ? <CreateEditShop/>:<Navigate to={"/"}/>}/>
        <Route path='/add-food' element={userData ? <AddItems/>:<Navigate to={"/"}/>}/>
        <Route path='/edititem/:itemId' element={userData ? <EditItem/>:<Navigate to={"/"}/>}/>
+     
     </Routes>
+     <ToastContainer/>
+     </>
   );
 };
 
