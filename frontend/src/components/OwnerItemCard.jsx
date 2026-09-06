@@ -5,23 +5,19 @@ import { useNavigate} from 'react-router-dom';
 import { useDispatch } from 'react-redux';
  import axios from 'axios';
 import { serverUrl } from '../App';
-import { useState } from 'react';
 
-function OwnerItemCard({ data }) {
+
+function OwnerItemCard({ data}) {
 
     const navigate = useNavigate()
     const dispatch = useDispatch()
-    const [items, setItems] = useState([]);
+    
 
     const handleDelete = async () => {
         try{
             const result = await axios.get(`${serverUrl}/api/item/delete/${data._id}`,
                 {withCredentials:true})
-
-                 setItems(prevItems =>
-            prevItems.filter(item => item._id !== data._id)
-        );
-
+          dispatch(setMyShopData(result.data))
         } catch(error){
        console.log(error);
     }
