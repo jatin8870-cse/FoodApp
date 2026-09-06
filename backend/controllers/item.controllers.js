@@ -29,8 +29,10 @@ export const addItem = async (req,res) => {
 await shop.populate("owner");
     return res.status(201).json(shop)
 
-    } catch(error){ 
-    console.log("ADD ITEM ERROR:", error);
+    } catch (error) {
+    console.log("🔥 ADD ITEM ERROR:", error);
+    console.log("🔥 MESSAGE:", error.message);
+    console.log("🔥 STACK:", error.stack);
 
     return res.status(500).json({
         message: "add item error",
@@ -112,9 +114,9 @@ export const deleteItem = async (req,res) =>{
             return res.status(400).json({message:"item not found"})
         }
          const shop = await Shop.findOne({owner:req.userId})
-          shop.items=shop.items.filter(i=>i!==item._id)
+          shop.items.pull(item._id);
           await shop.save()
-          shop.populate({
+         await shop.populate({
             path:"items",
         options:{sort:{updatedAt: -1}}
           })
