@@ -29,9 +29,14 @@ export const addItem = async (req,res) => {
 await shop.populate("owner");
     return res.status(201).json(shop)
 
-    } catch(error){
-       return res.status(500).json({message:`add item error${error}`})
-    }
+    } catch(error){ 
+    console.log("ADD ITEM ERROR:", error);
+
+    return res.status(500).json({
+        message: "add item error",
+        error: error.message
+    });
+}
 }
 
 
