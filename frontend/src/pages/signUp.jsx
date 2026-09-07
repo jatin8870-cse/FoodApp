@@ -60,8 +60,7 @@ const signUp = () => {
             }, { withCredentials: true });
             //  console.log(result.data);
            
-           
-              
+  
             if (role === "owner") {
                 console.log("1. OWNER SIGNUP SUCCESSFUL, SENDING INVITATION CODE TO SERVER");
             const ownerResult = await axios.post(
