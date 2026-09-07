@@ -18,7 +18,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(cors({
-    origin: true,
+    origin: [
+        "http://localhost:5173",
+        "https://food-app-gamma-hazel.vercel.app"
+    ],
     credentials: true
 }));
 
