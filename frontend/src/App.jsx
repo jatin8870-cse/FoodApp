@@ -14,7 +14,7 @@ import useGetMyShop from "./hook/useGetMyShop";
 import CreateEditShop from "./pages/CreateEditShop";
 import AddItems from "./pages/AddItems";
 import EditItem from "./pages/EditItem";
-
+import VerifyOtp from "./pages/VerifyOtp";
 
 export const serverUrl = import.meta.env.VITE_API_URL;
 const App = () => {
@@ -33,6 +33,8 @@ const App = () => {
       <Route path='/create-edit-shop' element={userData ? <CreateEditShop/>:<Navigate to={"/"}/>}/>
        <Route path='/add-food' element={userData ? <AddItems/>:<Navigate to={"/"}/>}/>
        <Route path='/edititem/:itemId' element={userData ? <EditItem/>:<Navigate to={"/"}/>}/>
+      <Route path="/verifyotp" element={<VerifyOtp />} />
+
      
     </Routes>
      <ToastContainer/>

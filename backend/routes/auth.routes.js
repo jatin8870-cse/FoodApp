@@ -1,6 +1,7 @@
 import express from "express";
 import { singUp, singIn, signOut } from "../controllers/auth.controllers.js";
-import { sendOtp, verifyOtp, resetPassword,googleAuth } from "../controllers/auth.controllers.js";
+import { sendOtp, verifyOtp, resetPassword,googleAuth,becomeOwner,verifyOwnerOtp} from "../controllers/auth.controllers.js";
+import isAuth from "../middlewares/isAuth.js";
 
 const authRouter = express.Router();
 
@@ -15,6 +16,8 @@ authRouter.post("/sendOtp", sendOtp);
 authRouter.post("/verifyOtp", verifyOtp);
 authRouter.post("/resetPassword", resetPassword);
 authRouter.post("/googleauth",googleAuth );
+authRouter.post("/become-owner",isAuth,becomeOwner);
+authRouter.post("/verify-owner-otp",isAuth,verifyOwnerOtp);
 
 
 

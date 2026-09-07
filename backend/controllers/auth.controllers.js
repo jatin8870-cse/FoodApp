@@ -1,8 +1,10 @@
 import User from "../models/user.model.js";
 import bcrypt from "bcryptjs";
 import genToken from "../utils/token.js";
-import { sendOtpMail } from "../utils/mail.js";
-
+import { sendOtpMail,sendOwnerOtp } from "../utils/mail.js";
+import crypto from "crypto";
+import OwnerOtp from "../models/ownerotp.js";
+const isProduction = process.env.NODE_ENV === "production";
 export const singUp = async (req, res) => {
   try {
     const { fullName, email, password, mobile, role } = req.body;
@@ -28,15 +30,15 @@ export const singUp = async (req, res) => {
       email,
       password: hashedPassword,
       mobile,
-      role,
+      role
     });
 
     const token = await genToken(user._id);
    res.cookie("token", token, {
-  secure: true,
-  sameSite: "none",
-  httpOnly: true,
-  maxAge: 7 * 24 * 60 * 60 * 1000,
+ httpOnly: true,
+    secure: isProduction,
+    sameSite: isProduction ? "none" : "lax",
+    maxAge: 7 * 24 * 60 * 60 * 1000
 });
 
     return res.status(201).json(user);
@@ -47,6 +49,8 @@ export const singUp = async (req, res) => {
 
 export const singIn = async (req, res) => {
   try {
+          
+
     const { email, password } = req.body;
     const user = await User.findOne({ email });
     if (!user) {
@@ -60,10 +64,10 @@ export const singIn = async (req, res) => {
 
     const token = await genToken(user._id);
     res.cookie("token", token, {
-  secure: true,
-  sameSite: "none",
   httpOnly: true,
-  maxAge: 7 * 24 * 60 * 60 * 1000,
+    secure: isProduction,
+    sameSite: isProduction ? "none" : "lax",
+    maxAge: 7 * 24 * 60 * 60 * 1000
 });
 
     return res.status(201).json(user);
@@ -187,3 +191,157 @@ export  const googleAuth = async (req,res)  => {
             .json({ message: `GoogleAuth error: ${error.message}` });
   }
 }
+
+export const becomeOwner = async (req, res) => {
+    try {
+
+        console.log("BECOME OWNER USER ID:", req.userId);
+
+        const { invitationCode } = req.body;
+
+        if (!invitationCode) {
+            return res.status(400).json({
+                message: "Invitation code is required"
+            });
+        }
+
+        if (invitationCode !== process.env.OWNER_INVITATION_CODE) {
+            return res.status(403).json({
+                message: "Invalid invitation code"
+            });
+        }
+
+        // JWT se mila hua userId use karo
+        const user = await User.findById(req.userId);
+
+        if (!user) {
+            return res.status(404).json({
+                message: "User not found"
+            });
+        }
+
+        if (user.role === "owner") {
+            return res.status(400).json({
+                message: "You are already an owner"
+            });
+        }
+
+        const otp = crypto
+            .randomInt(100000, 1000000)
+            .toString();
+
+        await OwnerOtp.deleteMany({
+            user: user._id
+        });
+
+        await OwnerOtp.create({
+            user: user._id,
+            otp,
+            expiresAt: new Date(Date.now() + 5 * 60 * 1000)
+        });
+
+        await sendOwnerOtp(user.email, otp);
+
+        return res.status(200).json({
+            message: "Invitation code verified"
+        });
+
+    } catch (error) {
+
+        console.log("BECOME OWNER ERROR:", error);
+
+        return res.status(500).json({
+            message: "Become owner error"
+        });
+    }
+};
+
+export const verifyOwnerOtp = async (req, res) => {
+    try {
+
+        console.log("VERIFY OWNER USER ID:", req.userId);
+
+        const { otp } = req.body;
+
+        if (!otp) {
+            return res.status(400).json({
+                message: "OTP is required"
+            });
+        }
+
+        const user = await User.findById(req.userId);
+
+        if (!user) {
+            return res.status(404).json({
+                message: "User not found"
+            });
+        }
+
+        if (user.role === "owner") {
+            return res.status(400).json({
+                message: "You are already an owner"
+            });
+        }
+
+        const ownerOtp = await OwnerOtp.findOne({
+            user: user._id
+        });
+
+        if (!ownerOtp) {
+            return res.status(400).json({
+                message: "OTP not found or expired"
+            });
+        }
+
+        if (ownerOtp.expiresAt < new Date()) {
+
+            await OwnerOtp.deleteOne({
+                _id: ownerOtp._id
+            });
+
+            return res.status(400).json({
+                message: "OTP expired"
+            });
+        }
+
+        if (ownerOtp.otp !== otp) {
+            return res.status(400).json({
+                message: "Invalid OTP"
+            });
+        }
+
+        // Make user owner
+        user.role = "owner";
+        await user.save();
+
+        // OTP single use
+        await OwnerOtp.deleteOne({
+            _id: ownerOtp._id
+        });
+
+        // Create login token
+        const token = await genToken(user._id);
+
+        const isProduction = process.env.NODE_ENV === "production";
+
+        res.cookie("token", token, {
+            httpOnly: true,
+            secure: isProduction,
+            sameSite: isProduction ? "none" : "lax",
+            maxAge: 7 * 24 * 60 * 60 * 1000
+        });
+
+        return res.status(200).json({
+            message: "You are now an owner",
+            user
+        });
+
+    } catch (error) {
+
+        console.log("VERIFY OWNER OTP ERROR:", error);
+
+        return res.status(500).json({
+            message: "Verify owner OTP error"
+        });
+    }
+};

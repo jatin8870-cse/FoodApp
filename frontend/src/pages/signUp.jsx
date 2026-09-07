@@ -22,7 +22,6 @@ const signUp = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [role, setRole] = useState("");
     const navigate = useNavigate("");
-    const [usestate, setUsestate] = useState("");
     const [email, setEmail] = useState("");
     const [mobile, setMobile] = useState("");
     const [password, setPassword] = useState("");
@@ -30,19 +29,59 @@ const signUp = () => {
     const [err,seterr] = useState("")
     const [loading,setloading] = useState(false)
     const dispatch = useDispatch()
+    const [invitationCode, setInvitationCode] = useState("");
+
 
     const handleSignUp = async () => {
-            setloading(true)
+           
+
+            if (!role) {
+        seterr("Please select a role");
+        return;
+    }
+
+    if (role === "owner" && !invitationCode) {
+        seterr("Please enter owner invitation code");
+        return;
+    }
+
+    setloading(true);
+    seterr("");
         try {
+
+            const signupRole = role === "owner" ? "user" : role;
+
             const result = await axios.post(`${serverUrl}/api/auth/singUp`, {
                 fullName,
                 email,
                 mobile,
                 password,
-                role
+                role: signupRole
             }, { withCredentials: true });
-            // console.log(result);
-            dispatch(setUserData(result.data))
+            //  console.log(result.data);
+           
+           
+              
+            if (role === "owner") {
+                console.log("1. OWNER SIGNUP SUCCESSFUL, SENDING INVITATION CODE TO SERVER");
+            const ownerResult = await axios.post(
+                `${serverUrl}/api/auth/become-owner`,
+                {
+                    invitationCode
+                },
+                {
+                    withCredentials: true
+                }
+            );
+           setloading(false);
+              navigate("/verifyotp");
+                 setOtpStep(true);
+             
+            return;
+        }
+
+         dispatch(setUserData(result.data))
+         navigate("/");
             setloading(false)
             seterr("")
         } catch (error) {
@@ -137,7 +176,9 @@ const signUp = () => {
                     <label htmlFor="role" className='block text-gray-700 font-medium mb-1'>Role</label>
                     <div className='flex  gap-2'>
                         {["user", "owner", "deliveryBoy"].map((r) => (
+
                             <button
+                            type="button"
                                 key={r}
                                 className={`mr-2 px-4 cursor-pointer py-2 rounded-lg ${role === r ? 'bg-orange-500 text-white' : 'bg-gray-200 text-gray-700'}`}
                                 onClick={() => setRole(r)}
@@ -148,7 +189,22 @@ const signUp = () => {
                     </div>
                 </div>
 
-                <button className='w-full cursor-pointer bg-orange-500 text-white py-2 rounded-lg hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-opacity-50'
+                {role === "owner" && (
+    <div className="mb-4">
+        <label className="block text-gray-700 font-medium mb-1">
+            Owner Invitation Code
+        </label>
+
+        <input
+            type="text"
+            placeholder="Enter owner invitation code"
+            value={invitationCode}
+            onChange={(e) => setInvitationCode(e.target.value)}
+            className="w-full border rounded-lg px-3 py-2"
+        />
+    </div>
+)}
+   <button className='w-full cursor-pointer bg-orange-500 text-white py-2 rounded-lg hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-opacity-50'
                     onClick={handleSignUp} disabled={loading}>
                         {loading?<ClipLoader size={20}/>:"SignUp"}
                   
@@ -161,7 +217,6 @@ const signUp = () => {
                     <FcGoogle className='inline-block mr-2' />
                     <span>Signup with Google</span>
                 </button>
-                
                 <p className='text-center cursor-pointer text-gray-600 mt-4' onClick={() => navigate('/signin')}>
                     Already have an account ? <span className='text-orange-500 hover:underline cursor-pointer'>Sign in</span>
                 </p>
