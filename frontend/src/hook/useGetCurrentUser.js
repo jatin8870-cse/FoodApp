@@ -7,6 +7,15 @@ const useGetCurrentUser = () => {
 
     const dispatch = useDispatch()
   useEffect(() => {
+
+     if (
+            location.pathname === "/signup" ||
+            location.pathname === "/signin" ||
+            location.pathname === "/forgot-password"
+        ) {
+            return;
+        }
+        
     const fetchUser = async () => {
     try{
 

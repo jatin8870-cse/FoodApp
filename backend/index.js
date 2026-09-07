@@ -7,7 +7,6 @@ import authRouter from "./routes/auth.routes.js";
 import cors from "cors";
 import userRouter from "./routes/user.routes.js"
 import shopRouter from "./routes/shop.routes.js";
-import Item from "./models/item.model.js";
 import itemRouter from "./routes/item.routes.js";
 
 
