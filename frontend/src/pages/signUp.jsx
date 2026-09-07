@@ -73,6 +73,7 @@ const signUp = () => {
                 }
             );
            setloading(false);
+           console.log("navigate to verify otp page");
               navigate("/verifyotp");
                  setOtpStep(true);
              
