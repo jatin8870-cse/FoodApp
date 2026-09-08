@@ -88,10 +88,6 @@ const VerifyOwnerOtp = () => {
                     </p>
                 )}
 
-                <button className='w-full cursor-pointer bg-orange-500 text-white py-2 rounded-lg hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-opacity-50'
-                                        onClick={handleResetPassword} disabled={loading}>
-                                          {loading?<ClipLoader size={20}/>:"Reset Password"}
-                                        </button>
 
                 <button
                     type="button"
