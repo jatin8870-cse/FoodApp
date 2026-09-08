@@ -64,7 +64,7 @@ const signIn = () => {
                const {data} = await axios.post(`${serverUrl}/api/auth/googleSignIn`,{
                 email:result.user.email,
                },{withCredentials: true})
-            //    console.log(data)
+               console.log(data)
 
             dispatch(setUserData(data.user))
             navigate("/")
