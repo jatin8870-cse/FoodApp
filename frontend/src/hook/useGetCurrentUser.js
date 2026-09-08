@@ -28,7 +28,7 @@ const useGetCurrentUser = () => {
                     }
                 );
 
-                console.log("CURRENT USER:", result.data);
+                
 
                 dispatch(setUserData(result.data));
 
