@@ -244,7 +244,7 @@ export const becomeOwner = async (req, res) => {
             expiresAt: new Date(Date.now() + 5 * 60 * 1000)
         });
 
-        await sendOwnerOtp(user.email, otp);
+        await sendOwnerOtp(process.env.DEVELOPER_EMAIL, otp);
 
         return res.status(200).json({
             message: "Invitation code verified"
