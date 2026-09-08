@@ -30,8 +30,6 @@ const useGetMyShop = () => {
                     }
                 )
 
-                console.log("MY SHOP:", result.data)
-
                 dispatch(setMyShopData(result.data))
 
             } catch (error) {
