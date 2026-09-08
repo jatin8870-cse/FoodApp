@@ -108,7 +108,7 @@ export const sendOtp = async (req, res) => {
     user.otpExpiry = Date.now() + 5 * 60 * 1000;
     user.isOtpVerified = false;
     await user.save();
-    sendOtpMail(user.email, otp);
+   await sendOtpMail(user.email, otp);
     return res.status(200).json({ message: "OTP sent successfully" });
   } catch (error) {
     return res
