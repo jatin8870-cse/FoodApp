@@ -53,13 +53,13 @@ const ForgotPassword = () => {
 
      const handleResetPassword = async () => {
         if(newPassword!=confirmPassword){
-            return null
+            seterr("Passwords do not match");
+            return
         }
             setloading(true)
         try{
    const result = await axios.post(`${serverUrl}/api/auth/resetPassword`, {email,newPassword},
       {withCredentials:true})
-      console.log(result)
       seterr("")
       navigate("/signUp")
           setloading(false)

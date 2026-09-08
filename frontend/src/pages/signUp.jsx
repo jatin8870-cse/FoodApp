@@ -93,25 +93,37 @@ const signUp = () => {
             return
         }
 
+          if (!role) {
+           seterr("Please select a role")
+            return
+        }
+
 
         try {
 
             const provider = new GoogleAuthProvider()
             const result = await signInWithPopup(auth, provider)
 
-            const { data } = await axios.post(`${serverUrl}/api/auth/googleauth`, {
+            const { data } = await axios.post(`${serverUrl}/api/auth/googleauthSignup`, {
                 fullName: result.user.displayName,
                 email: result.user.email,
                 role,
                 mobile
             }, { withCredentials: true })
-            // console.log(data)
-               dispatch(setUserData(data))
+            
+               dispatch(setUserData(data.user))
+               
+               navigate("/");
         } catch (error) {
-
+    console.log("Google Auth Error:", error);
+    seterr(error.response?.data?.message || error.message); 
         }
 
     }
+
+
+
+    
     return (
         <div className='min-h-screen flex items-center justify-center p-4  w-full' style={{ backgroundColor: bgcolor }}>
             <div className={`bg-white rounded-xl shadow-lg w-full max-w-md p-8 border-1px style={{ borderColor: borderColor }}    `}>
