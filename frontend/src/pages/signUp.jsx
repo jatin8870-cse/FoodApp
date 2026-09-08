@@ -58,7 +58,7 @@ const signUp = () => {
                 password,
                 role: signupRole
             }, { withCredentials: true });
-            //  console.log(result.data);
+              console.log(result.data);
            
   
             if (role === "owner") {
