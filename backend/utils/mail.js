@@ -3,47 +3,35 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
+const transporter = nodemailer.createTransport({
+  service: "Gmail",
+  port: 465,
+  secure: true,
+  auth: {
+    user: process.env.EMAIL,
+    pass: process.env.PASS,
+  },
+});
+
+
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 const FROM_EMAIL = process.env.RESEND_FROM;
 
 export const sendOtpMail = async (to, otp) => {
-  try {
-    const { data, error } = await resend.emails.send({
-      from: FROM_EMAIL,
-      to: [to],
-      subject: "Reset Your Password - Vingo",
-      html: `
-        <div style="font-family: Arial, sans-serif; padding: 20px;">
-          <h2>Vingo - Password Reset</h2>
-
-          <p>Your OTP for password reset is:</p>
-
-          <h1 style="letter-spacing: 5px;">
-            ${otp}
-          </h1>
-
-          <p>This OTP will expire in 5 minutes.</p>
-
-          <p>If you did not request a password reset, please ignore this email.</p>
-        </div>
-      `,
-    });
-
-    if (error) {
-      console.error("RESEND OTP ERROR:", error);
-      throw new Error(error.message);
-    }
-
-
-    return data;
-
-  } catch (error) {
-    console.error("SEND OTP MAIL ERROR:", error);
-    throw error;
-  }
+  await transporter.sendMail({
+    from: process.env.EMAIL,
+    to,
+    subject: "Reset Your Password",
+    html: `
+      <p>
+        Your OTP for password reset is 
+        <b>${otp}</b>.
+        It expires in 5 minutes.
+      </p>
+    `,
+  });
 };
-
 
 export const sendOwnerOtp = async (email, otp) => {
   try {
