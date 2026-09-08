@@ -13,7 +13,7 @@ import itemRouter from "./routes/item.routes.js";
 const app = express();
 
 app.set("trust proxy", 1);
-
+const port = process.env.PORT || 8000;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
