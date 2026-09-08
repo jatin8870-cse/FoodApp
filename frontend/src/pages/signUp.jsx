@@ -61,8 +61,6 @@ const signUp = () => {
              
             if (role === "owner") {
              
-
-                console.log("1. OWNER SIGNUP SUCCESSFUL, SENDING INVITATION CODE TO SERVER");
             const ownerResult = await axios.post(
                 `${serverUrl}/api/auth/become-owner`,
                 {
@@ -73,7 +71,6 @@ const signUp = () => {
                 }
             );
            setloading(false);
-           console.log("navigate to verify otp page");
               navigate("/verifyotp");
                  setOtpStep(true);
              

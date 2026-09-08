@@ -35,7 +35,6 @@ export const sendOtpMail = async (to, otp) => {
       throw new Error(error.message);
     }
 
-    console.log("PASSWORD OTP EMAIL SENT:", data);
 
     return data;
 

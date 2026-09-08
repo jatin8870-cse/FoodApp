@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { serverUrl } from "../App";
 import { useDispatch } from "react-redux";
 import { setUserData } from "../redux/userSlice";
+import { IoIosArrowRoundBack } from "react-icons/io";
 
 const VerifyOwnerOtp = () => {
 
@@ -59,7 +60,7 @@ const VerifyOwnerOtp = () => {
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-[#fff9f6] p-4">
-
+<IoIosArrowRoundBack size={34} className='text-[#ff4d2d]' onClick={() => navigate("/signIn")} />
             <div className="bg-white w-full max-w-md p-8 rounded-xl shadow-lg">
 
                 <h1 className="text-3xl font-bold text-orange-500 mb-2">
@@ -86,6 +87,11 @@ const VerifyOwnerOtp = () => {
                         *{err}
                     </p>
                 )}
+
+                <button className='w-full cursor-pointer bg-orange-500 text-white py-2 rounded-lg hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-opacity-50'
+                                        onClick={handleResetPassword} disabled={loading}>
+                                          {loading?<ClipLoader size={20}/>:"Reset Password"}
+                                        </button>
 
                 <button
                     type="button"

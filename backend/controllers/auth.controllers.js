@@ -42,7 +42,7 @@ res.cookie("token", token, {
     maxAge: 7 * 24 * 60 * 60 * 1000,
     path: "/"
 });
-console.log("TOKEN CREATED:", token);
+
     return res.status(201).json(user);
   } catch (error) {
     return res.status(500).json({ message: `Sing up error: ${error.message}` });
@@ -198,9 +198,6 @@ export  const googleAuth = async (req,res)  => {
 
 export const becomeOwner = async (req, res) => {
     try {
-
-        console.log("BECOME OWNER USER ID:", req.userId);
-
         const { invitationCode } = req.body;
 
         if (!invitationCode) {
@@ -252,7 +249,6 @@ export const becomeOwner = async (req, res) => {
 
     } catch (error) {
 
-        console.log("BECOME OWNER ERROR:", error);
 
         return res.status(500).json({
             message: "Become owner error"
@@ -262,8 +258,6 @@ export const becomeOwner = async (req, res) => {
 
 export const verifyOwnerOtp = async (req, res) => {
     try {
-
-        console.log("VERIFY OWNER USER ID:", req.userId);
 
         const { otp } = req.body;
 
