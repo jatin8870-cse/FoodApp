@@ -10,6 +10,8 @@ import shopRouter from "./routes/shop.routes.js";
 import itemRouter from "./routes/item.routes.js";
 
 
+const app = express();
+
 app.set("trust proxy", 1);
 
 app.use(express.json());

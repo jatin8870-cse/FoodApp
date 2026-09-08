@@ -62,6 +62,8 @@ const signUp = () => {
            
   
             if (role === "owner") {
+                console.log("1. SIGNUP RESPONSE:", result.data);
+
                 console.log("1. OWNER SIGNUP SUCCESSFUL, SENDING INVITATION CODE TO SERVER");
             const ownerResult = await axios.post(
                 `${serverUrl}/api/auth/become-owner`,
