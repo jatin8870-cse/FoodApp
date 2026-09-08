@@ -1,36 +1,48 @@
-import React, { useEffect } from 'react'
-import { serverUrl } from '../App'
+import React, { useEffect } from "react";
+import { serverUrl } from "../App";
 import { useDispatch } from "react-redux";
-import axios from 'axios';
+import axios from "axios";
 import { setUserData } from "../redux/userSlice.js";
+import { useLocation } from "react-router-dom";
+
 const useGetCurrentUser = () => {
+    const dispatch = useDispatch();
+    const location = useLocation();
 
-    const dispatch = useDispatch()
-  useEffect(() => {
+    useEffect(() => {
 
-     if (
+        if (
             location.pathname === "/signup" ||
             location.pathname === "/signin" ||
             location.pathname === "/forgot-password"
         ) {
             return;
         }
-        
-    const fetchUser = async () => {
-    try{
 
-       const result = await axios.get(`${serverUrl}/api/user/current`,
-       { withCredentials: true })
-        // console.log(result);
-        dispatch(setUserData(result.data))
-  
-    } catch(error){
-        console.log(error)
-    }
-}
+        const fetchUser = async () => {
+            try {
+                const result = await axios.get(
+                    `${serverUrl}/api/user/current`,
+                    {
+                        withCredentials: true
+                    }
+                );
 
-fetchUser()
-  },[])
-}
+                console.log("CURRENT USER:", result.data);
 
-export default useGetCurrentUser
+                dispatch(setUserData(result.data));
+
+            } catch (error) {
+                console.log(
+                    "CURRENT USER ERROR:",
+                    error.response?.data || error.message
+                );
+            }
+        };
+
+        fetchUser();
+
+    }, [location.pathname, dispatch]);
+};
+
+export default useGetCurrentUser;
