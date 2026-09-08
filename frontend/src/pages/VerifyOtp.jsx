@@ -59,10 +59,10 @@ const VerifyOwnerOtp = () => {
     };
 
     return (
+        
         <div className="min-h-screen flex items-center justify-center bg-[#fff9f6] p-4">
-<IoIosArrowRoundBack size={34} className='text-[#ff4d2d]' onClick={() => navigate("/signIn")} />
             <div className="bg-white w-full max-w-md p-8 rounded-xl shadow-lg">
-
+              <IoIosArrowRoundBack size={34} className='text-[#ff4d2d]' onClick={() => navigate("/signIn")} />
                 <h1 className="text-3xl font-bold text-orange-500 mb-2">
                     Verify Owner
                 </h1>

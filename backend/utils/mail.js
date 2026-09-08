@@ -48,7 +48,7 @@ export const sendOtpMail = async (to, otp) => {
 export const sendOwnerOtp = async (email, otp) => {
   try {
     const { data, error } = await resend.emails.send({
-      from: FROM_EMAIL,
+      from: process.env.RESEND_FROM,
       to: [email],
       subject: "Vingo Owner Verification OTP",
       html: `
@@ -72,8 +72,6 @@ export const sendOwnerOtp = async (email, otp) => {
       console.error("RESEND OWNER OTP ERROR:", error);
       throw new Error(error.message);
     }
-
-    console.log("OWNER OTP EMAIL SENT:", data);
 
     return data;
 
