@@ -20,6 +20,7 @@ const ForgotPassword = () => {
 
     const handleSendOtp = async () => {
         setloading(true)
+        console.log("email id is : ",email)
         try{
    const result = await axios.post(`${serverUrl}/api/auth/sendotp`, {email},
       {withCredentials:true})
