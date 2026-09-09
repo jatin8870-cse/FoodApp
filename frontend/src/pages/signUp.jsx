@@ -34,51 +34,57 @@ const signUp = () => {
 
     const handleSignUp = async () => {
            
-
+console.log("Selected role:", role);
             if (!role) {
         seterr("Please select a role");
         return;
     }
 
-    if (role === "owner" && !invitationCode) {
-        seterr("Please enter owner invitation code");
-        return;
-    }
+    // if (role === "owner" && !invitationCode) {
+    //     seterr("Please enter owner invitation code");
+    //     return;
+    // }
 
     setloading(true);
     seterr("");
         try {
 
-            const signupRole = role === "owner" ? "user" : role;
+            // const signupRole = role === "owner" ? "user" : role;
 
             const result = await axios.post(`${serverUrl}/api/auth/singUp`, {
                 fullName,
                 email,
                 mobile,
                 password,
-                role: signupRole
+                role: role
             }, { withCredentials: true });
              
-            if (role === "owner") {
+        //     if (role === "owner") {
              
-            const ownerResult = await axios.post(
-                `${serverUrl}/api/auth/become-owner`,
-                {
-                    invitationCode
-                },
-                {
-                    withCredentials: true
-                }
-            );
-           setloading(false);
-              navigate("/verifyotp");
-                 setOtpStep(true);
+        //     const ownerResult = await axios.post(
+        //         `${serverUrl}/api/auth/become-owner`,
+        //         {
+        //             invitationCode
+        //         },
+        //         {
+        //             withCredentials: true
+        //         }
+        //     );
+        //    setloading(false);
+        //       navigate("/verifyotp");
+        //          setOtpStep(true);
              
-            return;
-        }
-
-         dispatch(setUserData(result.data))
-         navigate("/");
+        //     return;
+        // }
+          
+        console.log("Signup response:", result.data);
+        navigate("/verifyotp", {
+            state: {
+                email: result.data.email
+            }
+        });
+        //  dispatch(setUserData(result.data))
+        //  navigate("/");
             setloading(false)
             seterr("")
         } catch (error) {
@@ -198,7 +204,7 @@ const signUp = () => {
                     </div>
                 </div>
 
-                {role === "owner" && (
+                {/* {role === "owner" && (
     <div className="mb-4">
         <label className="block text-gray-700 font-medium mb-1">
             Owner Invitation Code
@@ -212,7 +218,7 @@ const signUp = () => {
             className="w-full border rounded-lg px-3 py-2"
         />
     </div>
-)}
+)} */}
    <button className='w-full cursor-pointer bg-orange-500 text-white py-2 rounded-lg hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-opacity-50'
                     onClick={handleSignUp} disabled={loading}>
                         {loading?<ClipLoader size={20}/>:"SignUp"}

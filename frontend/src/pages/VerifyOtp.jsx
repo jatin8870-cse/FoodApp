@@ -6,9 +6,15 @@ import { serverUrl } from "../App";
 import { useDispatch } from "react-redux";
 import { setUserData } from "../redux/userSlice";
 import { IoIosArrowRoundBack } from "react-icons/io";
+import { useLocation } from "react-router-dom";
 
 const VerifyOwnerOtp = () => {
 
+    const location = useLocation();
+
+const email = location.state?.email;
+
+console.log("EMAIL FOR OTP:", email);
     const [otp, setOtp] = useState("");
     const [loading, setLoading] = useState(false);
     const [err, setErr] = useState("");
@@ -17,47 +23,51 @@ const VerifyOwnerOtp = () => {
     const dispatch = useDispatch();
 
     const handleVerifyOwnerOtp = async () => {
+    if (otp.length !== 6) {
+        setErr("Please enter 6 digit OTP");
+        return;
+    }
 
-        if (otp.length !== 6) {
-            setErr("Please enter 6 digit OTP");
-            return;
-        }
+    if (!email) {
+        setErr("Email not found. Please signup again.");
+        return;
+    }
 
-        setLoading(true);
-        setErr("");
+    setLoading(true);
+    setErr("");
 
-        try {
+    try {
+        const { data } = await axios.post(
+            `${serverUrl}/api/auth/verifyOtp`,
+            {
+                email,
+                otp,
+            },
+            {
+                withCredentials: true,
+            }
+        );
 
-            const { data } = await axios.post(
-                `${serverUrl}/api/auth/verify-owner-otp`,
-                {
-                    otp
-                },
-                {
-                    withCredentials: true
-                }
-            );
+        console.log("OTP VERIFIED:", data);
 
-            console.log("OWNER VERIFIED:", data);
+        dispatch(setUserData(data.user));
 
-            dispatch(setUserData(data.user));
+        navigate("/");
 
-            navigate("/");
+    } catch (error) {
+        console.log(
+            "VERIFY OTP ERROR:",
+            error?.response?.data
+        );
 
-        } catch (error) {
-
-            console.log("VERIFY OTP ERROR:", error);
-
-            setErr(
-                error?.response?.data?.message ||
-                "OTP verification failed"
-            );
-
-        } finally {
-            setLoading(false);
-        }
-    };
-
+        setErr(
+            error?.response?.data?.message ||
+            "OTP verification failed"
+        );
+    } finally {
+        setLoading(false);
+    }
+};
     return (
         
         <div className="min-h-screen flex items-center justify-center bg-[#fff9f6] p-4">
