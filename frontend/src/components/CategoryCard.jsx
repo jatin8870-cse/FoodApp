@@ -1,11 +1,23 @@
 import React from 'react'
 
-function CategoryCard() {
+function CategoryCard({data}) {
   return (
     <div className='w-[120px] h-[140px] md:h-[180px] rounded-2xl
     border-2 border-[#ff4d2d] shrink-0 overflow-hidden bg-white shadow-xl
-    shadow-gray-200 hover:shadow-lg transition-shadow '>
-      
+    shadow-gray-200 hover:shadow-lg transition-shadow relative'>
+        <img src={data.image} alt={data.category} 
+      className='w-full h-full object-cover object-cover 
+      transform hover:scale-110 transition-transform 
+      hover:scale-110 transition-transform duration-300' />
+
+<div className='absolute bottom-0 w-full left-0 bg-[#ffffff96] text-center
+        bg-opacity-95 px-3 py-1 rounded-t-xl text-center shadow text-sm font-medium
+        text-gray-800 backdrop-blur'>
+
+        {data.category}
+
+</div>
+
     </div>
   )
 }

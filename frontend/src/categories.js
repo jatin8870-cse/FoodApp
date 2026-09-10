@@ -12,15 +12,15 @@ import image11 from './assets/image11.jpg';
 
 
 export const categories = [
-    {"category":"Snacks","image":image1},
-    {"category":"Main Course","image":image2},
-    {"category":"Desserts","image":image3},
-    {"category":"pizza","image":image4},
-    {"category":"Burgers","image":image5},
-    {"category":"Sandwiches","image":image6},
-    {"category":"South Indian","image":image7},
-    {"category":"North Indian","image":image8},
-    {"category":"Chinese","image":image9},
-    {"category":"Fast Food","image":image10},
-    {"category":"All","image":image11}
+    {"category":"Snacks","image":image1,"hoverImage":image11},
+    {"category":"Main Course","image":image2,"hoverImage":image11},
+    {"category":"Desserts","image":image3,"hoverImage":image11},
+    {"category":"pizza","image":image4,"hoverImage":image11},
+    {"category":"Burgers","image":image5,"hoverImage":image11},
+    {"category":"Sandwiches","image":image6,"hoverImage":image11},
+    {"category":"South Indian","image":image7,"hoverImage":image11},
+    {"category":"North Indian","image":image8,"hoverImage":image11},
+    {"category":"Chinese","image":image9,"hoverImage":image11},
+    {"category":"Fast Food","image":image10,"hoverImage":image11},
+    {"category":"All","image":image11,"hoverImage":image11}
 ]
