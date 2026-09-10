@@ -38,15 +38,18 @@ const signIn = () => {
         try {
             const result = await axios.post(`${serverUrl}/api/auth/singIn`, {
                 email,
-                password,
-                
+                password
             },{withCredentials: true});
-            //  console.log(result);
-            dispatch(setUserData(result.data))
+        
+              navigate("/VerifyOtp", {
+            state: {
+                email: result.data.email,
+                type: "signin"
+            }
+        });
+        
             setloading(false)
             seterr("")
-            
-            navigate("/");
         } catch (error) {
             
             seterr(error?.response?.data?.message);

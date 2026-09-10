@@ -8,15 +8,13 @@ import { setUserData } from "../redux/userSlice";
 import { IoIosArrowRoundBack } from "react-icons/io";
 import { useLocation } from "react-router-dom";
 
-const VerifyOtp = () => {
+const VerifysingupOtp = () => {
 
     const location = useLocation();
 
 const email = location.state?.email;
-const type = location.state?.type;
 
 console.log("EMAIL FOR OTP:", email);
-console.log("TYPE FOR OTP:", type);
     const [otp, setOtp] = useState("");
     const [loading, setLoading] = useState(false);
     const [err, setErr] = useState("");
@@ -24,7 +22,7 @@ console.log("TYPE FOR OTP:", type);
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
-    const handleVerifyOtp = async () => {
+    const handleVerifysingupOtp = async () => {
     if (otp.length !== 6) {
         setErr("Please enter 6 digit OTP");
         return;
@@ -40,11 +38,10 @@ console.log("TYPE FOR OTP:", type);
 
     try {
         const { data } = await axios.post(
-            `${serverUrl}/api/auth/verifyOtp`,
+            `${serverUrl}/api/auth/verifyOtpSignup`,
             {
                 email,
                 otp,
-                type
             },
             {
                 withCredentials: true,
@@ -77,7 +74,7 @@ console.log("TYPE FOR OTP:", type);
             <div className="bg-white w-full max-w-md p-8 rounded-xl shadow-lg">
               <IoIosArrowRoundBack size={34} className='text-[#ff4d2d]' onClick={() => navigate("/signIn")} />
                 <h1 className="text-3xl font-bold text-orange-500 mb-2">
-                    Verify Owner
+                    Verify OTP
                 </h1>
 
                 <p className="text-gray-600 mb-6">
@@ -104,7 +101,7 @@ console.log("TYPE FOR OTP:", type);
 
                 <button
                     type="button"
-                    onClick={handleVerifyOtp}
+                    onClick={handleVerifysingupOtp}
                     disabled={loading}
                     className="w-full mt-5 bg-orange-500 text-white py-3 rounded-lg hover:bg-orange-600"
                 >
@@ -121,4 +118,4 @@ console.log("TYPE FOR OTP:", type);
     );
 };
 
-export default VerifyOtp;
+export default VerifysingupOtp;

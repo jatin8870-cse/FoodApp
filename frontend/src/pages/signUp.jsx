@@ -8,7 +8,7 @@ import axios from 'axios';
 import { serverUrl } from '../App';
 import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { auth } from "../../firebase";
-import {ClipLoader} from "react-spinners"
+import { ClipLoader } from "react-spinners"
 import { setUserData } from '../redux/userSlice';
 import { useDispatch } from "react-redux";
 
@@ -26,30 +26,23 @@ const signUp = () => {
     const [mobile, setMobile] = useState("");
     const [password, setPassword] = useState("");
     const [fullName, setFullName] = useState("");
-    const [err,seterr] = useState("")
-    const [loading,setloading] = useState(false)
+    const [err, seterr] = useState("")
+    const [loading, setloading] = useState(false)
     const dispatch = useDispatch()
     const [invitationCode, setInvitationCode] = useState("");
 
 
     const handleSignUp = async () => {
-           
-console.log("Selected role:", role);
-            if (!role) {
-        seterr("Please select a role");
-        return;
-    }
 
-    // if (role === "owner" && !invitationCode) {
-    //     seterr("Please enter owner invitation code");
-    //     return;
-    // }
+        console.log("Selected role:", role);
+        if (!role) {
+            seterr("Please select a role");
+            return;
+        }
 
-    setloading(true);
-    seterr("");
+        setloading(true);
+        seterr("");
         try {
-
-            // const signupRole = role === "owner" ? "user" : role;
 
             const result = await axios.post(`${serverUrl}/api/auth/singUp`, {
                 fullName,
@@ -58,49 +51,28 @@ console.log("Selected role:", role);
                 password,
                 role: role
             }, { withCredentials: true });
-             
-        //     if (role === "owner") {
-             
-        //     const ownerResult = await axios.post(
-        //         `${serverUrl}/api/auth/become-owner`,
-        //         {
-        //             invitationCode
-        //         },
-        //         {
-        //             withCredentials: true
-        //         }
-        //     );
-        //    setloading(false);
-        //       navigate("/verifyotp");
-        //          setOtpStep(true);
-             
-        //     return;
-        // }
-          
-        console.log("Signup response:", result.data);
-        navigate("/verifyotp", {
-            state: {
-                email: result.data.email
-            }
-        });
-        //  dispatch(setUserData(result.data))
-        //  navigate("/");
+            navigate("/VerifysingupOtp", {
+                state: {
+                    email: result.data.email
+                }
+            });
+        
             setloading(false)
             seterr("")
         } catch (error) {
             seterr(error?.response?.data?.message)
-             setloading(false)
+            setloading(false)
         }
     }
 
     const handleGoogleAuth = async () => {
         if (!mobile) {
-           seterr("mobile no is required")
+            seterr("mobile no is required")
             return
         }
 
-          if (!role) {
-           seterr("Please select a role")
+        if (!role) {
+            seterr("Please select a role")
             return
         }
 
@@ -116,20 +88,20 @@ console.log("Selected role:", role);
                 role,
                 mobile
             }, { withCredentials: true })
-            
-               dispatch(setUserData(data.user))
-               
-               navigate("/");
+
+            dispatch(setUserData(data.user))
+
+            navigate("/");
         } catch (error) {
-    console.log("Google Auth Error:", error);
-    seterr(error.response?.data?.message || error.message); 
+            console.log("Google Auth Error:", error);
+            seterr(error.response?.data?.message || error.message);
         }
 
     }
 
 
 
-    
+
     return (
         <div className='min-h-screen flex items-center justify-center p-4  w-full' style={{ backgroundColor: bgcolor }}>
             <div className={`bg-white rounded-xl shadow-lg w-full max-w-md p-8 border-1px style={{ borderColor: borderColor }}    `}>
@@ -147,7 +119,7 @@ console.log("Selected role:", role);
                     <label htmlFor="FullName" className='block text-gray-700 font-medium mb-1'>Full Name</label>
                     <input type="text" className='w-full border rounded-lg px-3 py-2 focus: outline-none focus:border-orange-500' placeholder='Enter your full name' style={{ border: `1px solid ${borderColor}` }}
                         onChange={(e) => setFullName(e.target.value)}
-                        value={fullName}  required
+                        value={fullName} required
                     />
                 </div>
 
@@ -156,7 +128,7 @@ console.log("Selected role:", role);
                     <label htmlFor="Email" className='block text-gray-700 font-medium mb-1'>Email</label>
                     <input type="email" className='w-full border rounded-lg px-3 py-2 focus: outline-none focus:border-orange-500' placeholder='Enter your email' style={{ border: `1px solid ${borderColor}` }}
                         onChange={(e) => setEmail(e.target.value)}
-                        value={email} required 
+                        value={email} required
                     />
                 </div>
 
@@ -193,7 +165,7 @@ console.log("Selected role:", role);
                         {["user", "owner", "deliveryBoy"].map((r) => (
 
                             <button
-                            type="button"
+                                type="button"
                                 key={r}
                                 className={`mr-2 px-4 cursor-pointer py-2 rounded-lg ${role === r ? 'bg-orange-500 text-white' : 'bg-gray-200 text-gray-700'}`}
                                 onClick={() => setRole(r)}
@@ -219,13 +191,13 @@ console.log("Selected role:", role);
         />
     </div>
 )} */}
-   <button className='w-full cursor-pointer bg-orange-500 text-white py-2 rounded-lg hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-opacity-50'
+                <button className='w-full cursor-pointer bg-orange-500 text-white py-2 rounded-lg hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-opacity-50'
                     onClick={handleSignUp} disabled={loading}>
-                        {loading?<ClipLoader size={20}/>:"SignUp"}
-                  
+                    {loading ? <ClipLoader size={20} /> : "SignUp"}
+
                 </button>
-             {err && <p className='text-red-500 text-center my-[10px]'>*{err}</p>}
-             
+                {err && <p className='text-red-500 text-center my-[10px]'>*{err}</p>}
+
 
                 <button className='w-full mt-4 cursor-pointer bg-white text-orange-500 border border-orange-500 py-2 rounded-lg hover:bg-orange-100 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-opacity-50'
                     onClick={handleGoogleAuth}>

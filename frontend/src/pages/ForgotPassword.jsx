@@ -38,7 +38,11 @@ const ForgotPassword = () => {
        const handleVerifyOtp = async () => {
         setloading(true)
         try{
-   const result = await axios.post(`${serverUrl}/api/auth/verifyOtp`, {email,otp},
+   const result = await axios.post(`${serverUrl}/api/auth/verifyOtp`, {
+    email,
+    otp,
+    type: "forgot-password"
+},
       {withCredentials:true})
       console.log(result)
       seterr("")
