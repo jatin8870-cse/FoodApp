@@ -27,17 +27,15 @@ const useGetShopByCity = () => {
 
         const fetchShop = async () => {
             try {
-                console.log("Fetching shop for:", city);
+            
                 const result = await axios.get(
                     `${serverUrl}/api/shop/get-by-city/${city}`,
                     {
                         withCredentials: true
                     }
                 );
-                console.log("SHOP:",result.data);
 
                  dispatch(setShopsInMyCity(result.data));
-                console.log(result.data)
 
             } catch (error) {
                 console.log(

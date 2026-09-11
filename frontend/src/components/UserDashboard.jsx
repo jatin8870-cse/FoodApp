@@ -9,7 +9,7 @@ import ShopCard from "./Shopcard";
 const UserDashboard = () => {
    useGetShopByCity()
   const {city,shopsInMyCity} = useSelector(state=>state.user)
-  console.log("SHOPS FROM REDUX:", shopsInMyCity);
+ 
   return (
     <div className='w-screen min-h-screen flex flex-col gap-5 items-center bg-[#fff9f6] overflow-y-auto'>
       <Nav />

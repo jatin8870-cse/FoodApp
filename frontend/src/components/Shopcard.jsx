@@ -1,7 +1,6 @@
 import React from 'react';
 
 const ShopCard = ({ data }) => {
-  console.log("SHOP CARD DATA:", data);
   return (
     <div className="w-full bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-shadow">
 
