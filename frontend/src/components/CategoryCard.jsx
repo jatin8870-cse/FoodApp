@@ -1,6 +1,7 @@
 import React from 'react'
 
-function CategoryCard({data}) {
+function CategoryCard({data,index}) {
+
   return (
     <div className='w-[120px] h-[140px] md:h-[180px] rounded-2xl
     border-2 border-[#ff4d2d] shrink-0 overflow-hidden bg-white shadow-xl

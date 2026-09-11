@@ -10,18 +10,20 @@ import useGetCurrentUser from "./hook/useGetCurrentUser";
 import { useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
 import useGetCity from "./hook/useGetCity";
-import useGetMyShop from "./hook/useGetMyShop";
+
 import CreateEditShop from "./pages/CreateEditShop";
 import AddItems from "./pages/AddItems";
 import EditItem from "./pages/EditItem";
 import VerifyOtp from "./pages/VerifyOtp";
 import VerifysingupOtp from "./pages/VerifysingupOtp";
 
+
 export const serverUrl = import.meta.env.VITE_API_URL;
 const App = () => {
   useGetCurrentUser()
   useGetCity()
-  useGetMyShop()
+  // useGetMyShop()
+  // useGetShopByCity()
   const {userData} =  useSelector(state=>state.user)
   
   return (

@@ -5,9 +5,10 @@ import { FaUtensils } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { FaPen } from "react-icons/fa";
 import OwnerItemCard from './OwnerItemCard';
-
+import useGetMyShop from "../hook/useGetMyShop";
 
 const OwnerDashboard = () => {
+   useGetMyShop();
   const { myShopData } = useSelector(state => state.owner)
   const navigate = useNavigate();
   return (
