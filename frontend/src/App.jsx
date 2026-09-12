@@ -10,7 +10,7 @@ import useGetCurrentUser from "./hook/useGetCurrentUser";
 import { useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
 import useGetCity from "./hook/useGetCity";
-
+import useGetItemsByCity from "./hook/useGetItemsByCity";
 import CreateEditShop from "./pages/CreateEditShop";
 import AddItems from "./pages/AddItems";
 import EditItem from "./pages/EditItem";
@@ -24,6 +24,8 @@ const App = () => {
   useGetCity()
   // useGetMyShop()
   // useGetShopByCity()
+   useGetItemsByCity()
+   
   const {userData} =  useSelector(state=>state.user)
   
   return (

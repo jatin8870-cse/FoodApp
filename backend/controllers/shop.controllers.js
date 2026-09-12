@@ -1,5 +1,7 @@
 import Shop from "../models/shop.model.js";
 import uploadOnCloudinary from "../utils/cloudinary.js";
+import Item from "../models/item.model.js";
+
 
 
 export const createEditShop = async (req, res) => {
@@ -68,11 +70,11 @@ export const createEditShop = async (req, res) => {
 
 export const getMyShop = async (req,res) => {
     try{
-          console.log("USER ID:", req.userId);
+        
             const allShops = await Shop.find({});
-            console.log("ALL SHOPS:", allShops);
+          
         const shop = await Shop.findOne({owner : req.userId}).populate("owner items")
-       console.log("SHOP FOUND:", shop);
+    
         if(!shop){
           return res.status(404).json({
                 message: "Shop not found"
@@ -103,3 +105,38 @@ export const getshopByCity = async (req,res) => {
       return req.status(500).json({message:`get my shop bu city  error ${error}`})
     }
 }
+
+export const deleteShop = async (req, res) => {
+  try {
+    console.log("hit dlete")
+    const shopId = req.params.id;
+
+    // 1. Find the shop first
+    const shop = await Shop.findById(shopId);
+
+    if (!shop) {
+      return res.status(404).json({
+        message: "Shop not found"
+      });
+    }
+
+    // 2. Delete all items of this shop
+    await Item.deleteMany({
+      _id: { $in: shop.items }
+    });
+
+    // 3. Delete the shop
+    await Shop.findByIdAndDelete(shopId);
+
+    return res.status(200).json({
+      message: "Shop and all items deleted successfully"
+    });
+
+  } catch (error) {
+    console.log(error);
+
+    return res.status(500).json({
+      message: `Delete shop error: ${error.message}`
+    });
+  }
+};

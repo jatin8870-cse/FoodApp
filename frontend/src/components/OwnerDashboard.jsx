@@ -1,16 +1,37 @@
 import React from 'react'
 import Nav from './Nav'
-import { useSelector } from 'react-redux'
+import { useDispatch,useSelector } from 'react-redux'
 import { FaUtensils } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { FaPen } from "react-icons/fa";
 import OwnerItemCard from './OwnerItemCard';
 import useGetMyShop from "../hook/useGetMyShop";
+import { FaRegTrashCan } from "react-icons/fa6";
+import axios from 'axios';
+import { serverUrl } from '../App';
+import { clearMyShopData } from "../redux/ownerSlice";
 
 const OwnerDashboard = () => {
    useGetMyShop();
   const { myShopData } = useSelector(state => state.owner)
   const navigate = useNavigate();
+   const dispatch = useDispatch();
+
+  const handleDelete = async () => {
+  try {
+    const result = await axios.delete(
+      `${serverUrl}/api/shop/delete-shop/${myShopData._id}`,
+      {
+        withCredentials: true
+      }
+    );
+   
+    console.log(result.data);
+     dispatch(clearMyShopData());
+  } catch (error) {
+    console.log(error);
+  }
+};
   return (
     <div className="
     w-full
@@ -47,7 +68,16 @@ const OwnerDashboard = () => {
             <div className='absolute top-4 right-4 bg-[#ff4d2d] text-white p-2 rounded-full
                  shadow-md hover:bg-orange-600 transition-colors cursor-pointer' onClick={() => navigate("/create-edit-shop")}>
               <FaPen size={20} />
+              
             </div>
+            <div
+    className="absolute top-39 right-4 bg-[#ff4d2d] text-white p-2 rounded-full shadow-md
+               hover:bg-orange-600 cursor-pointer
+               transition-colors"
+    onClick={handleDelete}
+  >
+    <FaRegTrashCan size={16} />
+  </div>
             <img src={myShopData.image} alt={myShopData.name} className='w-full h-48 sm:h-64 object-cover' />
             <div className='p-4 sm:p-6'>
               <h1 className='text-xl sm:text-2xl font-bold text-gray-800 mb-2'>{myShopData.name}</h1>
