@@ -12,11 +12,12 @@ import { setCity } from "../redux/userSlice";
 import { FaPlus } from "react-icons/fa6";
 import { LuReceipt } from "react-icons/lu";
 import { useNavigate } from 'react-router-dom';
+import { addToCart } from '../redux/userSlice';
 
 
 
 const Nav = () => {
-   const { userData, city } = useSelector((state) => state.user);
+   const { userData, city,cartItems } = useSelector((state) => state.user);
     const { myShopData} = useSelector((state) => state.owner);
    const [showInfo, setshowInfo] = useState(false)
    const [showsearch, setshowsearch] = useState(false)
@@ -103,9 +104,9 @@ fixed top-0 z-[9999] bg-[#fff9f6] overflow-visible">
                </div>
             </> : (
                <>
-                  <div className='relative cursor-pointer'>
+                  <div className='relative cursor-pointer' onClick={()=>navigate("/cart")}>
                      <FaCartShopping size={25} className='text-[#ff4d2d]' />
-                     <span className='absolute right-[-9px] top-[-12px] text-[#ff4d2d]'>0</span>
+                     <span className='absolute right-[-9px] top-[-12px] text-[#ff4d2d]'>{cartItems.length}</span>
                   </div>
 
                    

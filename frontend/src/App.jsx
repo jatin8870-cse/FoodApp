@@ -16,6 +16,7 @@ import AddItems from "./pages/AddItems";
 import EditItem from "./pages/EditItem";
 import VerifyOtp from "./pages/VerifyOtp";
 import VerifysingupOtp from "./pages/VerifysingupOtp";
+import CartPage from "./pages/CartPage";
 
 
 export const serverUrl = import.meta.env.VITE_API_URL;
@@ -43,6 +44,8 @@ const App = () => {
     path="/VerifysingupOtp"
     element={<VerifysingupOtp />}
 />
+     
+      <Route path='/cart' element={userData ? <CartPage/>:<Navigate to={"/"}/>}/>
 
 </Routes>
      <ToastContainer/>
