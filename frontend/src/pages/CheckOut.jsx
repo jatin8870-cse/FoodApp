@@ -10,23 +10,6 @@ import { setAddress, setLocation } from '../redux/mapSlice';
 import axios from 'axios';
 
 
-
-import L from "leaflet";
-
-import markerIcon from "leaflet/dist/images/marker-icon.png";
-import markerIcon2x from "leaflet/dist/images/marker-icon-2x.png";
-import markerShadow from "leaflet/dist/images/marker-shadow.png";
-
-const defaultIcon = L.icon({
-  iconUrl: markerIcon,
-  iconRetinaUrl: markerIcon2x,
-  shadowUrl: markerShadow,
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-  popupAnchor: [1, -34],
-  shadowSize: [41, 41],
-});
-
 //for Recenter the location in the map
 function RecenterMap({location}){
   if(location.lat && location.lon){
@@ -120,7 +103,7 @@ console.log(error)
   url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
 />
     <RecenterMap location ={location} />
-        <Marker position={[location?.lat,location?.lon]}  icon={defaultIcon}  draggable eventHandlers={{dragend : onDragEnd}}/>
+        <Marker position={[location?.lat,location?.lon]}  draggable eventHandlers={{dragend : onDragEnd}}/>
         </MapContainer>
      </div>
     </div>
